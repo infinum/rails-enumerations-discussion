@@ -62,22 +62,14 @@ en:
 # In view:
 td= instrument.category_name
 ```
-### Option 2: Rails enum with constant hash (Simpler, no I18n needed)
+### Option 2: Rails enum with hash (Simpler, no I18n needed)
 
 ```ruby
 class Instrument < ApplicationRecord
   enum category: [:bass, :brass, :drums, :fx, :guitars].index_with(&:to_s)
 
-  CATEGORY_NAMES = {
-    'bass' => 'Bass',
-    'brass' => 'Brass',
-    'drums' => 'Drums',
-    'fx' => 'FX',
-    'guitars' => 'Guitars'
-  }.freeze
-
   def category_name
-    CATEGORY_NAMES[category]
+    self.categories[category]&.camelize
   end
 end
 ```
