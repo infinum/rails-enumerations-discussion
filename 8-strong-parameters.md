@@ -175,8 +175,6 @@ class Therapy::CreateService
   end
 end
 ```
-### TherapyParams.create_params_for('by_hour')
-### TherapyParams.update_params_for('every_day')
 
 
 ### Option 2: Form objects (Best for complex validation)

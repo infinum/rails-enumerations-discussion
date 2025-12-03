@@ -68,8 +68,6 @@ class ProjectPolicy < ApplicationPolicy
   end
 end
 ```
-user_membership.non_dev?
-user_membership.developer?
 
 
 ### Option 2: Module with role definitions (Better organization)
@@ -100,8 +98,6 @@ class Membership < ApplicationRecord
   end
 end
 ```
-Roles.non_dev?('client') # => true
-user_membership.non_dev?
 
 
 ### Option 3: Dedicated authorization object (Most explicit)
@@ -153,8 +149,6 @@ class ProjectPolicy < ApplicationPolicy
   end
 end
 ```
-user_membership.non_dev?
-user_membership.can_view_all_projects?
 
 
 ### Option 4: In policy itself (Most Rails-idiomatic with Pundit)
@@ -206,17 +200,3 @@ not business rules about what those states can do.
 - Multiple role groups: Use Option 2 (module with constants)
 - Complex authorization: Use Option 3 (dedicated authorizer)
 - Standard Pundit setup: Use Option 4 (keep logic in policy)
-
-For this specific case, Option 1 or Option 4 is best:
-
-```ruby
-class Membership < ApplicationRecord
- enum role: [:client, :collaborator, :developer].index_with(&:to_s)
-
- def non_dev?
-   client? || collaborator?
- end
-end
-```
-
-Simple, explicit, and doesn't require an extra gem.

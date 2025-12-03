@@ -15,6 +15,9 @@ class ApplicationType < BaseEnumeration
     when :dpf then Release.dpf
     end
   end
+
+# Usage:
+# application.application_type.releases
 end
 ```
 
@@ -58,7 +61,7 @@ end
 # Usage:
 # application.releases
 ```
-### Option 2: Service Object (Better for complex logic)
+### Option 2: Query Object Pattern (Most explicit and testable)
 
 ```ruby
 class ApplicationReleaseQuery
@@ -83,44 +86,11 @@ class Application < ApplicationRecord
 end
 
 # Usage:
-# application.releases
+# application.releases or more explicitly without the model method
 # ApplicationReleaseQuery.call('amk')
 ```
-### Option 3: Query Object Pattern (Most explicit and testable)
 
-```ruby
-module ApplicationQueries
-  class ReleasesQuery
-    def initialize(application_type)
-      @application_type = application_type
-    end
-
-    def call
-      case @application_type
-      when 'amk', 'aek'
-        Release.amk
-      when 'dpf'
-        Release.dpf
-      else
-        Release.none
-      end
-    end
-  end
-end
-
-class Application < ApplicationRecord
-  enum application_type: [:amk, :aek, :dpf].index_with(&:to_s)
-
-  def releases
-    ApplicationQueries::ReleasesQuery.new(application_type).call
-  end
-end
-
-# Usage:
-# application.releases
-# ApplicationQueries::ReleasesQuery.new('amk').call
-```
-### Option 4: Scope on Release model (Most Rails-idiomatic)
+### Option 3: Scope on Release model (Most Rails-idiomatic)
 
 ```ruby
 class Release < ApplicationRecord
@@ -143,6 +113,9 @@ class Application < ApplicationRecord
     Release.for_application_type(application_type)
   end
 end
+
+# Usage:
+# application.releases
 ```
 ## Verdict
 
@@ -155,9 +128,8 @@ This pattern creates unclear boundaries. Enumerations should define values and t
 
 ### Recommendation by use case:
 - Simple cases: Use Option 1 (class method)
-- Medium complexity: Use Option 2 (Service Object)
-- Complex queries: Use Option 3 (Query Object)
-- When queries are Release-focused: Use Option 4 (scope on model)
+- Medium complexity and complex queries: Use Option 2 (Query Object)
+- When queries are Release-focused: Use Option 3 (scope on model)
 
 ### All alternatives are:
 - More testable (can test query logic independently)

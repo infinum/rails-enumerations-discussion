@@ -18,7 +18,7 @@ class Instrument < ApplicationRecord
   enumeration :category, class_name: 'InstrumentCategory'
 end
 
-# view
+# view usage
 td= instrument.category.name
 ```
 
@@ -59,7 +59,7 @@ en:
 
 
 ```haml
-# In view:
+# view usage
 td= instrument.category_name
 ```
 ### Option 2: Rails enum with hash (Simpler, no I18n needed)
@@ -75,14 +75,14 @@ end
 ```
 
 ```haml
-# In view:
+# view usage:
 td= instrument.category_name
 ```
 
-### Option 3: Helper method (If presentation logic is complex)
+### Option 3: Decorator method (If presentation logic is complex)
 
 ```ruby
-module InstrumentsHelper
+module InstrumentsDecorator
   CATEGORY_DISPLAY = {
     'bass' => 'Bass',
     'brass' => 'Brass',
@@ -91,15 +91,15 @@ module InstrumentsHelper
     'guitars' => 'Guitars'
   }.freeze
 
-  def instrument_category_name(instrument)
-    CATEGORY_DISPLAY[instrument.category]
+  def category_name
+    CATEGORY_DISPLAY[category]
   end
 end
 ```
 
 ```haml
-# In view:
-td= instrument_category_name(instrument)
+# view usage:
+td= instrument.category_name
 ```
 
 ## Verdict
@@ -111,7 +111,7 @@ td= instrument_category_name(instrument)
 ### Recommendation:
 - Use Option 1 (I18n) if you need internationalization
 - Use Option 2 (constant hash) if English-only or simple names
-- Use Option 3 (helper) if you have complex presentation logic
+- Use Option 3 (decorator) if you have complex presentation logic
 
 ### All three alternatives are:
 - More performant (no object allocation per access)

@@ -230,43 +230,6 @@ class Order < ApplicationRecord
   enum order_status: [:created, :authorized, :queued, :approved].index_with(&:to_s)
 end
 ```
-### Option 4: Value Object (Most OOP approach)
-```ruby
-class KioskStatusView
-  attr_reader :order
-
-  def initialize(order)
-    @order = order
-  end
-
-  def status
-    MAPPING[order.order_status]
-  end
-
-  def status_id
-    # Return the appropriate ID for the API
-    Order.kiosk_statuses[status]
-  end
-
-  def opened?
-    status == 'opened'
-  end
-
-  private
-
-  MAPPING = OrderToKioskStatusMapper::MAPPING
-end
-
-class Order < ApplicationRecord
-  def kiosk_view
-    @kiosk_view ||= KioskStatusView.new(self)
-  end
-end
-
-# usage
-# @order.kiosk_view.status
-# @order.kiosk_view.opened?
-```
 
 
 ## Verdict

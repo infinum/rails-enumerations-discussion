@@ -26,6 +26,9 @@ class Platform < Enumerations::Base
   def valid_extension?(file)
     extensions.include? File.extname(file)
   end
+
+# Usage:
+# release.platform.valid_extension?(file_path)
 end
 ```
 
@@ -82,16 +85,16 @@ class ExtractReleaseInfo
   end
 end
 ```
-#### 1
+#### Usage in views #1
 ```ruby
 = render @platform.form, f: f
 ```
-#### 2
+#### Usage in views #2
 ```ruby
 = link_to [project, platform: platform] do
   = icon platform.icon
 ```
-#### 3 (for css class)
+#### Usage in views #3 (for css class)
 ```ruby
 = icon release.platform.icon, class: 'release__platform-icon', style: "background-color: #{release.platform.icon_background};"
 ```
@@ -206,6 +209,7 @@ end
 
 ### Option 2: YAML Configuration (Best for non-developer editable config)
 config/platforms.yml
+```yaml
 android:
  name: Android
  installable: true
@@ -226,6 +230,7 @@ ios:
  icon: apple
  stash_platform_id: 2
  icon_background: '#000000'
+```
 
 ```ruby
 class PlatformConfig
@@ -334,10 +339,12 @@ class Release < ApplicationRecord
     platform_class.valid_extension?(file)
   end
 end
+
+# Usage:
+# @release.installable?
+# @release.valid_extension?(filename)
+# Platforms::Android::ICON
 ```
-@release.installable?
-@release.valid_extension?(filename)
-Platforms::Android::ICON
 
 
 ## Verdict

@@ -69,10 +69,11 @@ class Order < ApplicationRecord
   scope :for_report, -> { where(status: REPORTABLE_STATUSES) }
   scope :by_status, -> { for_report.order(touched_at: :desc) }
 end
-```
-Order.for_report
 
-Order.by_status
+# Usage:
+# Order.for_report
+# Order.by_status
+```
 
 
 ### Option 2: Separate module for organization (Better for many groupings)
@@ -103,11 +104,11 @@ class Order < ApplicationRecord
   scope :for_report, -> { where(status: OrderStatus::REPORTABLE) }
   scope :by_status, -> { for_report.order(touched_at: :desc) }
 end
+
+# Usage:
+# Order.for_report
+# OrderStatus::REPORTABLE
 ```
-Order.for_report
-
-OrderStatus::REPORTABLE
-
 
 ## Verdict
 

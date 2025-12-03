@@ -118,8 +118,6 @@ def serializers
   )
 end
 ```
-fair.event_serializer # => EventSerializers::Demo
-fair.authentication_strategy # => Users::Auth::Local
 
 
 ### Option 2: Service object with factory method (Good for complex logic)
