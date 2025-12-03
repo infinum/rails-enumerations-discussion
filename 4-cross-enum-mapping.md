@@ -200,9 +200,11 @@ class Order < ApplicationRecord
     @device_status ||= DeviceStatusTransformer.new(self)
   end
 end
+
+# usage
+# @order.device_status.kiosk_status
+# @order.device_status.kiosk_status_id
 ```
-@order.device_status.kiosk_status
-@order.device_status.kiosk_status_id
 
 
 ### Option 3: Concern for Reusability (If multiple models need this)
@@ -260,9 +262,11 @@ class Order < ApplicationRecord
     @kiosk_view ||= KioskStatusView.new(self)
   end
 end
+
+# usage
+# @order.kiosk_view.status
+# @order.kiosk_view.opened?
 ```
-@order.kiosk_view.status
-@order.kiosk_view.opened?
 
 
 ## Verdict

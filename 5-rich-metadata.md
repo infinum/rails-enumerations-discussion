@@ -82,16 +82,16 @@ class ExtractReleaseInfo
   end
 end
 ```
-# 1
+#### 1
 ```ruby
 = render @platform.form, f: f
 ```
-# 2
+#### 2
 ```ruby
 = link_to [project, platform: platform] do
   = icon platform.icon
 ```
-# 3 (for css class)
+#### 3 (for css class)
 ```ruby
 = icon release.platform.icon, class: 'release__platform-icon', style: "background-color: #{release.platform.icon_background};"
 ```
@@ -193,14 +193,15 @@ class Release < ApplicationRecord
   include PlatformConfig
   enum platform: [:android, :ios].index_with(&:to_s)
 end
+
+# Usage (same as enumerations):
+# @release.platform_installable?
+# @release.platform_extensions
+# @release.platform_valid_extension?(filename)
+# @release.platform_form
+# @release.platform_icon
+# @release.platform_icon_background
 ```
-Usage (same as enumerations):
-@release.platform_installable?
-@release.platform_extensions
-@release.platform_valid_extension?(filename)
-@release.platform_form
-@release.platform_icon
-@release.platform_icon_background
 
 
 ### Option 2: YAML Configuration (Best for non-developer editable config)

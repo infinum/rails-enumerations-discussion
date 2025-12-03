@@ -71,6 +71,7 @@ class Order < ApplicationRecord
 end
 ```
 Order.for_report
+
 Order.by_status
 
 
@@ -104,6 +105,7 @@ class Order < ApplicationRecord
 end
 ```
 Order.for_report
+
 OrderStatus::REPORTABLE
 
 
