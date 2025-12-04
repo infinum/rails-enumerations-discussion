@@ -37,10 +37,12 @@ end
 ### Option 1: Simple class with query methods (Best for simple cases)
 
 ```ruby
-class ApplicationType
-  AMK = 'amk'
-  AEK = 'aek'
-  DPF = 'dpf'
+module ApplicationType
+  ALL = [
+    AMK = 'amk'
+    AEK = 'aek'
+    DPF = 'dpf'
+  ]
 
   def self.releases_for(type)
     case type
@@ -51,7 +53,7 @@ class ApplicationType
 end
 
 class Application < ApplicationRecord
-  enum application_type: [:amk, :aek, :dpf].index_with(&:to_s)
+  enum application_type: ApplicationType::ALL.index_with(&:to_s)
 
   def releases
     ApplicationType.releases_for(application_type)
