@@ -220,7 +220,7 @@ module DeviceStatusMapping
 
   class_methods do
     def device_status_mapper
-      OrderToKioskStatusMapper
+      raise NotImplementedError, "#{self} must define device_status_mapper"
     end
   end
 end
@@ -228,6 +228,19 @@ end
 class Order < ApplicationRecord
   include DeviceStatusMapping
   enum order_status: [:created, :authorized, :queued, :approved].index_with(&:to_s)
+
+  def self.device_status_mapper
+    OrderToKioskStatusMapper
+  end
+end
+
+class Shipment < ApplicationRecord
+  include DeviceStatusMapping
+  enum shipment_status: [:pending, :in_transit, :delivered].index_with(&:to_s)
+
+  def self.device_status_mapper
+    ShipmentToKioskStatusMapper
+  end
 end
 ```
 
@@ -264,6 +277,4 @@ The Mapper Pattern solves all of these:
 - Works with any enum approach (Rails enum or enumerations gem)
 
 ### Recommendation:
-always use Option 1 (Mapper class) for cross-enum transformations.
-This pattern is so common in Rails that many teams have a mappers/
-directory just for these classes.
+Use Option 1 (Mapper class) for cross-enum transformations.
